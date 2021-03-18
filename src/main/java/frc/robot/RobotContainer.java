@@ -27,6 +27,8 @@ import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.AutoInitCommand;
+import frc.robot.commands.AutoNavCommand;
+import frc.robot.commands.AutoNavCommand.AutoNavChallenge;
 import frc.robot.commands.DisabledInitCommand;
 import frc.robot.commands.DriveTrajectoryCommand;
 import frc.robot.commands.TeleopInitCommand;
@@ -69,6 +71,8 @@ public class RobotContainer {
           List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
           // End 3 meters straight ahead of where we started, facing forward
           new Pose2d(3, 0, new Rotation2d(0)));
+  private final AutoNavCommand m_autoNavSlalomCommand =
+      new AutoNavCommand(AutoNavChallenge.Slalom, m_drivetrainSubsystem);
 
   // Driver Input
 
@@ -91,6 +95,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the automous chooser.
     m_autoChooser.setDefaultOption("Example Autonomous Trajectory", m_exampleAutoCommand);
+    m_autoChooser.addOption("AutoNav Slalom", m_autoNavSlalomCommand);
 
     // Configure default commands.
 

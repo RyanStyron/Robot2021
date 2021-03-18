@@ -117,6 +117,11 @@ public class DriveTrajectoryCommand extends CommandBase {
     addRequirements(drivetrainSubsystem);
   }
 
+  public DriveTrajectoryCommand(DrivetrainSubsystem drivetrainSubsystem, Trajectory trajectory) {
+    m_drivetrainSubsystem = drivetrainSubsystem;
+    m_trajectory = trajectory;
+  }
+
   /** This method is run when the command is initially scheduled. */
   @Override
   public void initialize() {
@@ -158,7 +163,7 @@ public class DriveTrajectoryCommand extends CommandBase {
     double rightSpeedSetpoint = targetWheelSpeeds.rightMetersPerSecond;
 
     // Calculate the feedforward for the given velocity setpoint. For the acceleration, calculate
-    // the secant from the previous speed to this speed (Δy/Δx=Δv/Δt).
+    // the secant from the previous speed to this speed (?y/?x=?v/?t).
     double leftFeedforward =
         m_feedforward.calculate(
             leftSpeedSetpoint, (leftSpeedSetpoint - m_prevSpeeds.leftMetersPerSecond) / dt);

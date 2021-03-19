@@ -71,8 +71,15 @@ public class RobotContainer {
           List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
           // End 3 meters straight ahead of where we started, facing forward
           new Pose2d(3, 0, new Rotation2d(0)));
+  // Follows the trajectory of the Barrel Racing AutoNav challenge.
+  private final AutoNavCommand m_autoNavBarrelRacingCommand =
+      new AutoNavCommand(AutoNavChallenge.BarrelRacing, m_drivetrainSubsystem);
+  // Follows the trajectory of the Bounce AutoNav challenge.
+  private final AutoNavCommand m_autoNavBounceCommand =
+      new AutoNavCommand(AutoNavChallenge.Bounce, m_drivetrainSubsystem);
+  // Follows the trajectory of the Slalom AutoNav challenge.
   private final AutoNavCommand m_autoNavSlalomCommand =
-      new AutoNavCommand(AutoNavChallenge.Slalom, m_drivetrainSubsystem);
+      new AutoNavCommand(AutoNavChallenge.Bounce, m_drivetrainSubsystem);
 
   // Driver Input
 
@@ -95,6 +102,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the automous chooser.
     m_autoChooser.setDefaultOption("Example Autonomous Trajectory", m_exampleAutoCommand);
+    m_autoChooser.addOption("AutoNav Barrel Racing", m_autoNavBarrelRacingCommand);
+    m_autoChooser.addOption("AutoNav Bounce", m_autoNavBounceCommand);
     m_autoChooser.addOption("AutoNav Slalom", m_autoNavSlalomCommand);
 
     // Configure default commands.

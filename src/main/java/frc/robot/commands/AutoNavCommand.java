@@ -4,33 +4,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class AutoNavCommand extends CommandBase {
+public class AutoNavCommand extends DriveTrajectoryCommand {
 
   public enum AutoNavChallenge {
-    BarrelRacing("BarrelRacing"),
-    Bounce("Bounce"),
-    Slalom("Slalom");
-
-    private String challengeName;
-
-    private AutoNavChallenge(String challengeName) {
-      this.challengeName = challengeName;
-    }
+    BarrelRacing,
+    Bounce,
+    Slalom;
   }
-
-  // private final AutoNavChallenge m_autoNavChallenge;
-
-  // private final Path m_trajectoryFilePath;
 
   public AutoNavCommand(
       AutoNavChallenge autoNavChallenge, DrivetrainSubsystem drivetrainSubsystem) {
-    // m_autoNavChallenge = autoNavChallenge;
-    // m_trajectoryFilePath =
-    //     Filesystem.getDeployDirectory().toPath().resolve("paths/Slalom.wpilib.json");
-    // m_trajectory = TrajectoryUtil.fromPathweaverJson(m_trajectoryFilePath);
+    super(drivetrainSubsystem, getTrajectory(autoNavChallenge));
+  }
+
+  private static Trajectory getTrajectory(AutoNavChallenge autoNavChallenge) {
+    Path trajectoryFilePath =
+        Filesystem.getDeployDirectory()
+            .toPath()
+            .resolve("paths/" + autoNavChallenge.toString() + ".wpilib.json");
+    Trajectory trajectory = new Trajectory();
+
+    try {
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryFilePath);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
+    return trajectory;
   }
 }

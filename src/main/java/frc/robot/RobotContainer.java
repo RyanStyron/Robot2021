@@ -79,7 +79,7 @@ public class RobotContainer {
       new AutoNavCommand(AutoNavChallenge.Bounce, m_drivetrainSubsystem);
   // Follows the trajectory of the Slalom AutoNav challenge.
   private final AutoNavCommand m_autoNavSlalomCommand =
-      new AutoNavCommand(AutoNavChallenge.Bounce, m_drivetrainSubsystem);
+      new AutoNavCommand(AutoNavChallenge.Slalom, m_drivetrainSubsystem);
 
   // Driver Input
 

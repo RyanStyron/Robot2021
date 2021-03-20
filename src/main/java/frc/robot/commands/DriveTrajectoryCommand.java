@@ -8,8 +8,11 @@
 
 package frc.robot.commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -23,6 +26,7 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -81,7 +85,7 @@ public class DriveTrajectoryCommand extends CommandBase {
           .addConstraint(m_voltageConstraint);
 
   // Trajectory (Parameterizes the spline by time)
-  private final Trajectory m_trajectory;
+  private Trajectory m_trajectory;
 
   // Timer
   private final Timer m_timer = new Timer();
@@ -117,10 +121,17 @@ public class DriveTrajectoryCommand extends CommandBase {
     addRequirements(drivetrainSubsystem);
   }
 
-  public DriveTrajectoryCommand(DrivetrainSubsystem drivetrainSubsystem, Trajectory trajectory) {
+  public DriveTrajectoryCommand(DrivetrainSubsystem drivetrainSubsystem, String pathName) {
     m_drivetrainSubsystem = drivetrainSubsystem;
-    m_trajectory = trajectory;
+    m_trajectory = new Trajectory();
+    Path trajectoryFilePath =
+        Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
 
+    try {
+      m_trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryFilePath);
+    } catch (IOException exception) {
+      exception.printStackTrace();
+    }
     addRequirements(drivetrainSubsystem);
   }
 

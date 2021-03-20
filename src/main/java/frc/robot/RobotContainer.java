@@ -73,13 +73,13 @@ public class RobotContainer {
           new Pose2d(3, 0, new Rotation2d(0)));
   // Follows the trajectory of the Barrel Racing AutoNav challenge.
   private final AutoNavCommand m_autoNavBarrelRacingCommand =
-      new AutoNavCommand(AutoNavChallenge.BarrelRacing, m_drivetrainSubsystem);
+      new AutoNavCommand(m_drivetrainSubsystem, AutoNavChallenge.BarrelRacing);
   // Follows the trajectory of the Bounce AutoNav challenge.
   private final AutoNavCommand m_autoNavBounceCommand =
-      new AutoNavCommand(AutoNavChallenge.Bounce, m_drivetrainSubsystem);
+      new AutoNavCommand(m_drivetrainSubsystem, AutoNavChallenge.Bounce);
   // Follows the trajectory of the Slalom AutoNav challenge.
   private final AutoNavCommand m_autoNavSlalomCommand =
-      new AutoNavCommand(AutoNavChallenge.Slalom, m_drivetrainSubsystem);
+      new AutoNavCommand(m_drivetrainSubsystem, AutoNavChallenge.Slalom);
 
   // Driver Input
 

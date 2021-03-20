@@ -219,7 +219,7 @@ public final class Constants {
        *
        * <p>Unit: Meters.
        */
-      public static final double kRamseteB = 2;
+      public static final double kRamseteB = 1.85;
       /**
        * The ζ term for the Ramsete controller.
        *

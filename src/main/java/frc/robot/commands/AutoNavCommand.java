@@ -21,35 +21,29 @@ public class AutoNavCommand extends SequentialCommandGroup {
     Slalom;
   }
 
-  // AutoNav Challenge
-  private final AutoNavChallenge m_autoNavChallenge;
-
   // Drivetrain Subsystem
   private final DrivetrainSubsystem m_drivetrainSubsystem;
 
   public AutoNavCommand(
       DrivetrainSubsystem drivetrainSubsystem, AutoNavChallenge autoNavChallenge) {
     m_drivetrainSubsystem = drivetrainSubsystem;
-    m_autoNavChallenge = autoNavChallenge;
 
     addCommands(
         // Reset the robot to its starting position.
         new InstantCommand(
             () ->
                 m_drivetrainSubsystem.resetOdometry(
-                    new Pose2d(
-                        getTrajectoryStartTranslation(m_autoNavChallenge), new Rotation2d()))),
+                    new Pose2d(getTrajectoryStartTranslation(autoNavChallenge), new Rotation2d()))),
         // Drive to a trajectory.
-        new DriveTrajectoryCommand(m_drivetrainSubsystem, m_autoNavChallenge.toString()));
+        new DriveTrajectoryCommand(m_drivetrainSubsystem, autoNavChallenge.toString()));
   }
 
   private Translation2d getTrajectoryStartTranslation(AutoNavChallenge autoNavChallenge) {
-    // TODO: Verify these start positions.
     switch (autoNavChallenge) {
       case BarrelRacing:
-        return new Translation2d(Units.inchesToMeters(30), Units.inchesToMeters(30));
+        return new Translation2d(Units.inchesToMeters(30), Units.inchesToMeters(90));
       case Bounce:
-        return new Translation2d(Units.inchesToMeters(30), Units.inchesToMeters(30));
+        return new Translation2d(Units.inchesToMeters(30), Units.inchesToMeters(90));
       case Slalom:
         return new Translation2d(Units.inchesToMeters(30), Units.inchesToMeters(30));
     }

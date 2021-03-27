@@ -1,7 +1,7 @@
 {
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
-  "maxVelocity": 3.0,
+  "maxVelocity": 1.9,
   "maxAcceleration": 3.0,
   "wheelBase": 1.189654643399417,
   "gameName": "Bounce Path",

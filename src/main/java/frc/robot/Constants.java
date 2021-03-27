@@ -166,7 +166,7 @@ public final class Constants {
      *
      * <p>Unit: Samples.
      */
-    public static final int kEncoderSamplesToAverage = 5;
+    public static final int kEncoderSamplesToAverage = 10;
 
     /** Feedforward Constants */
     public static final class Feedforward {
@@ -219,13 +219,13 @@ public final class Constants {
        *
        * <p>Unit: Meters.
        */
-      public static final double kRamseteB = 1.85;
+      public static final double kRamseteB = 2.0;
       /**
        * The ζ term for the Ramsete controller.
        *
        * <p>Unit: Seconds.
        */
-      public static final double kRamseteZeta = 0.7;
+      public static final double kRamseteZeta = 0.8;
     }
   }
 

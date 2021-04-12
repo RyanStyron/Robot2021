@@ -121,6 +121,12 @@ public class DriveTrajectoryCommand extends CommandBase {
     addRequirements(drivetrainSubsystem);
   }
 
+  /**
+   * Constructs a command that, when executed, will follow the provided trajectory.
+   *
+   * @param drivetrainSubsystem The drivetrain subsystem.
+   * @param pathName The name of the JSON path to generate a trajectory for.
+   */
   public DriveTrajectoryCommand(DrivetrainSubsystem drivetrainSubsystem, String pathName) {
     m_drivetrainSubsystem = drivetrainSubsystem;
     m_trajectory = new Trajectory();

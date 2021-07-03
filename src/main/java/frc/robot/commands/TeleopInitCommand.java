@@ -36,7 +36,7 @@ public class TeleopInitCommand extends InstantCommand {
     // We don't want to damage the floor of the new gym, so coast in neutral.
     m_drivetrainSubsystem.setNeutralMode(NeutralMode.Coast);
 
-    // Set the default teleoperated drive speed.
+    // Set the default drive speed.
     m_drivetrainSubsystem.setDriveSpeed(DrivetrainConstants.kSpeedNormal);
 
     // Reset the double solenoid.

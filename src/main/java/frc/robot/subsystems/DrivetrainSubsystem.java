@@ -19,7 +19,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.VecBuilder;
 
 import io.github.oblarg.oblog.Loggable;
 import io.github.oblarg.oblog.annotations.Log;
@@ -96,6 +98,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable {
       new DifferentialDrive(m_motorFrontLeft, m_motorFrontRight);
 
   // Simulated Drive Class
+  private static final boolean m_simulateError = false;
   private DifferentialDrivetrainSim m_differentialDriveSim =
       new DifferentialDrivetrainSim(
           LinearSystemId.identifyDrivetrainSystem(
@@ -107,7 +110,7 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable {
           DrivetrainConstants.kGearRatio,
           DrivetrainConstants.kTrackWidth,
           DrivetrainConstants.kWheelRadius,
-          null);
+          m_simulateError ? VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005) : null);
 
   // Odometry
   private DifferentialDriveOdometry m_odometry =
@@ -266,11 +269,38 @@ public class DrivetrainSubsystem extends SubsystemBase implements Loggable {
   }
 
   /**
+   * Returns the distance traveled by the robot.
+   *
+   * @return The average distance traveled between the two drive encoders.
+   */
+  public double getDistance() {
+    return (m_encoderLeft.getDistance() + m_encoderRight.getDistance()) / 2.0;
+  }
+
+  /**
    * Returns the heading of the robot.
    *
-   * @return The robot's heading in degrees, from -180 to 180
+   * @return The robot's heading in degrees, from -pi to pi.
    */
   public double getHeading() {
-    return -Math.IEEEremainder(m_gyro.getAngle(), 360);
+    return m_gyro.getRotation2d().getRadians();
+  }
+
+  /**
+   * Returns the speed of the robot.
+   *
+   * @return The average rate of change between the two drive encoders.
+   */
+  public double getSpeed() {
+    return (m_encoderLeft.getRate() + m_encoderRight.getRate()) / 2.0;
+  }
+
+  /**
+   * Returns the rotational speed of the robot.
+   *
+   * @return The rate of change in the gyroscope.
+   */
+  public double getTurnRate() {
+    return Units.degreesToRadians(m_gyro.getRate());
   }
 }

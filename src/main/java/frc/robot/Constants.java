@@ -8,6 +8,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.util.Units;
 
 /** Constants for ports on the robot and driver station, and for each subsystem. */
@@ -71,6 +74,12 @@ public final class Constants {
     public static final int kPortControllerManip = 1;
   }
 
+  /** Constants for field, and game pieces. */
+  public static final class FieldConstants {
+    /** The diameter of the power cells. */
+    public static final double kPowerCellDiameter = Units.inchesToMeters(7);
+  }
+
   /**
    * Constants for the drivetrain subsystem.
    *
@@ -102,13 +111,25 @@ public final class Constants {
      *
      * <p>Unit: Meters / second.
      */
-    public static final double kMaxTrajectoryVelocity = 3;
+    public static final double kMaxTrajectoryVelocity = 1.5;
     /**
      * The max acceleration to drive with while path following.
      *
      * <p>Unit: Meters / Second^2.
      */
-    public static final double kMaxTrajectoryAcceleration = 3;
+    public static final double kMaxTrajectoryAcceleration = 0.5;
+    /**
+     * The max velocity to turn at when turning on the spot.
+     *
+     * <p>Unit: Radians / second.
+     */
+    public static final double kMaxTurnVelocity = Units.degreesToRadians(100);
+    /**
+     * The max acceleration to turn with when turning on the spot.
+     *
+     * <p>Unit: Degrees / Second^2.
+     */
+    public static final double kMaxTurnAcceleration = Units.degreesToRadians(90);
     /**
      * The maximum voltage available to the drive motors while following a path.
      *
@@ -208,20 +229,68 @@ public final class Constants {
 
     /** Feedback Constants */
     public static final class Feedback {
+      /** Feedback on the drivetrain x-axis. */
+      public static final class X {
+        /** Closing on position, but outputting a velocity */
+        public static final class Position {
+          /**
+           * The proportional term for the PID controller.
+           *
+           * <p>Unit: (Meters / Second) * (1 / Meter).
+           */
+          public static final double kP = 0.5;
+          /**
+           * The derivative term for the PID controller.
+           *
+           * <p>Unit: (Meters / Second) * (Seconds / Meter).
+           */
+          public static final double kD = 0;
+        }
+        /** Closing on velocity. */
+        public static final class Velocity {
+          /**
+           * The proportional term for the PID controller.
+           *
+           * <p>Unit: (Meters / Second) * (Seconds / Meter).
+           */
+          public static final double kP = 2.55;
+        }
+      }
+      /** Feedback on the drivetrain theta. */
+      public static final class Theta {
+        /** Closing on position. */
+        public static final class Position {
+          /**
+           * The proportional term for the drive turn position PID controller.
+           *
+           * <p>Unit: (Radians / Second) * (1 / Radian).
+           */
+          public static final double kP = 0.5;
+          /**
+           * The derivative term for the drive turn position PID controller.
+           *
+           * <p>Unit: (Radians / Second) * (Seconds / Radian).
+           */
+          public static final double kD = 0;
+        }
+        /** Closing on velocity. */
+        public static final class Velocity {
+          /**
+           * The proportional term for the drive turn position PID controller.
+           *
+           * <p>Unit: (Radians / Second) * (Seconds / Radian).
+           */
+          public static final double kP = 2.55;
+        }
+      }
       /**
-       * The proportional term for the drive velocity PID controller.
-       *
-       * <p>Unit: Meters / Second.
-       */
-      public static final double kP = 2.55;
-      /**
-       * The B term for the Ramsete controller.
+       * The beta term for the Ramsete controller.
        *
        * <p>Unit: Meters.
        */
       public static final double kRamseteB = 2.0;
       /**
-       * The ζ term for the Ramsete controller.
+       * The zeta term for the Ramsete controller.
        *
        * <p>Unit: Seconds.
        */
@@ -243,5 +312,38 @@ public final class Constants {
     public static final double kSpeedSlow = 0.4;
     /** The normal speed to shoot balls at. */
     public static final double kSpeedNormal = 1.0;
+  }
+
+  /** Constants for the vision subsystem. */
+  public static final class VisionConstants {
+    /** The nickname of the Raspberry Pi Camera in PhotonVision. */
+    public static final String kCamName = "longwood564";
+    /** The diagonal field of view of the Picam, in degrees. TODO: Verify */
+    public static final double kCamDiagonalFOV = 25.35;
+    /** The pitch of the camera when the shooter is lowered, in radians. */
+    public static final double kCamPitchLow = Units.degreesToRadians(-10);
+    /** The pitch of the camera when the shooter is raised, in radians. */
+    public static final double kCamPitchHigh = Units.degreesToRadians(3);
+    /** Translation from the camera to the center of the robot. */
+    public static final Transform2d kTransCamToRobot =
+        new Transform2d(new Translation2d(0.4, 0.0), new Rotation2d());
+    /** The height of the camera when the shooter is lowered, in meters. */
+    public static final double kCamHeightOffGroundLow = 0.77;
+    /** The height of the camera when the shooter is raised, in meters. */
+    public static final double kCamHeightOffGroundHigh = 0.91;
+    /** TODO: Tune */
+    public static final double kCamMaxLEDRange = 20;
+    /** Width of the camera image, in pixels. */
+    public static final int kCamResolutionWidth = 960;
+    /** Height of the camera image, in pixels. */
+    public static final int kCamResolutionHeight = 720;
+    /** Minimum required area for the target. TODO: Tune */
+    public static final int kMinTargetArea = 0;
+  }
+
+  public static final class GalacticSearchConstants {
+    public static final double kStopDistance = 2;
+    // public static final double kAdditionalDistance = 0.2;
+    public static final double kAdditionalDistance = 0;
   }
 }
